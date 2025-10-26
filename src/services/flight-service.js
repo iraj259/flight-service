@@ -72,6 +72,16 @@ if(query.sort){
   }
 }
 
+async function getFlight(id) {
+  try {
+        const flight = await flightRepository.getAll()
+        return flight
+    } catch (error) {
+        throw new AppError("cannot fetch data of all the flights",StatusCodes.INTERNAL_SERVER_ERROR)
+
+    }
+}
+
 module.exports = {
-  createFlight, getAllFlights
+  createFlight, getAllFlights, getFlight
 };
