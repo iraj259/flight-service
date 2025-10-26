@@ -1,33 +1,80 @@
-const { StatusCodes } = require("http-status-codes");
+const { StatusCodes } = require('http-status-codes');
+
 const { ErrorResponse } = require('../utils/common');
-const AppError = require("../utils/errors/app-error");
+const AppError = require('../utils/errors/app-error');
 
 function validateCreateRequest(req, res, next) {
-  // List of required fields for Flight
-  const requiredFields = [
-    'flightNumber',
-    'airplane',
-    'departureAirportId',
-    'arrivalAirportId',
-    'departureTime',
-    'arrivalTime',
-    'price',
-    'totalSeats'
-  ];
-
-  // Collect missing fields
-  const missingFields = requiredFields.filter(field => !req.body[field]);
-
-  if (missingFields.length > 0) {
-    ErrorResponse.message = "Failed to create flight";
-    ErrorResponse.error = new AppError(
-      missingFields.map(f => `${f} is missing or invalid in the request body.`),
-      StatusCodes.BAD_REQUEST
-    );
-    return res.status(StatusCodes.BAD_REQUEST).json(ErrorResponse);
-  }
-
-  next();
+    if(!req.body.flightNumber) {
+        ErrorResponse.message = 'Something went wrong while creating flight';
+        ErrorResponse.error = new AppError(['flightNumber not found in the oncoming request in the correct form'], StatusCodes.BAD_REQUEST);
+        return res
+                .status(StatusCodes.BAD_REQUEST)
+                .json(ErrorResponse);
+    }
+    if(!req.body.airplaneId) {
+        ErrorResponse.message = 'Something went wrong while creating flight';
+        ErrorResponse.error = new AppError(['airplaneId not found in the oncoming request in the correct form'], StatusCodes.BAD_REQUEST);
+        return res
+                .status(StatusCodes.BAD_REQUEST)
+                .json(ErrorResponse);
+    }
+    if(!req.body.departureAirportId) {
+        ErrorResponse.message = 'Something went wrong while creating flight';
+        ErrorResponse.error = new AppError(['departureAirportId not found in the oncoming request in the correct form'], StatusCodes.BAD_REQUEST);
+        return res
+                .status(StatusCodes.BAD_REQUEST)
+                .json(ErrorResponse);
+    }
+    if(!req.body.arrivalAirportId) {
+        ErrorResponse.message = 'Something went wrong while creating flight';
+        ErrorResponse.error = new AppError(['departureAirportId not found in the oncoming request in the correct form'], StatusCodes.BAD_REQUEST);
+        return res
+                .status(StatusCodes.BAD_REQUEST)
+                .json(ErrorResponse);
+    }
+    if(!req.body.arrivalTime) {
+        ErrorResponse.message = 'Something went wrong while creating flight';
+        ErrorResponse.error = new AppError(['arrivalTime not found in the oncoming request in the correct form'], StatusCodes.BAD_REQUEST);
+        return res
+                .status(StatusCodes.BAD_REQUEST)
+                .json(ErrorResponse);
+    }
+    if(!req.body.departureTime) {
+        ErrorResponse.message = 'Something went wrong while creating flight';
+        ErrorResponse.error = new AppError(['departureTime not found in the oncoming request in the correct form'], StatusCodes.BAD_REQUEST);
+        return res
+                .status(StatusCodes.BAD_REQUEST)
+                .json(ErrorResponse);
+    }
+    if(!req.body.price) {
+        ErrorResponse.message = 'Something went wrong while creating flight';
+        ErrorResponse.error = new AppError(['price not found in the oncoming request in the correct form'], StatusCodes.BAD_REQUEST);
+        return res
+                .status(StatusCodes.BAD_REQUEST)
+                .json(ErrorResponse);
+    }
+    if(!req.body.totalSeats) {
+        ErrorResponse.message = 'Something went wrong while creating flight';
+        ErrorResponse.error = new AppError(['totalSeats not found in the oncoming request in the correct form'], StatusCodes.BAD_REQUEST);
+        return res
+                .status(StatusCodes.BAD_REQUEST)
+                .json(ErrorResponse);
+    }
+    next();
 }
 
-module.exports = { validateCreateRequest };
+function validateUpdateSeatsRequest(req, res, next) {
+    if(!req.body.seats) {
+        ErrorResponse.message = 'Something went wrong while creating flight';
+        ErrorResponse.error = new AppError(['seats not found in the incoming request in the correct form'], StatusCodes.BAD_REQUEST);
+        return res
+                .status(StatusCodes.BAD_REQUEST)
+                .json(ErrorResponse);
+    }
+    next();
+}
+
+module.exports = {
+    validateCreateRequest,
+    validateUpdateSeatsRequest
+}
